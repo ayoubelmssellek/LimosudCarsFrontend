@@ -4,10 +4,10 @@ import { siteConfig } from "@/config/site";
 
 import { HeroCarShowcase } from "./HeroCarShowcase";
 
-export function HeroSection({ carImages }: { carImages: string[] }) {
+export function HeroSection({ heroImages }: { heroImages: string[] }) {
   return (
-    <section className="overflow-hidden bg-white py-16 sm:py-20">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-10 px-6 lg:grid-cols-2">
+    <section className="overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-12 px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-8">
         <div className="animate-fade-in-left">
           <h1 className="text-4xl leading-tight font-extrabold text-[#1A1A1A] sm:text-5xl">
             Louez des voitures
@@ -30,8 +30,8 @@ export function HeroSection({ carImages }: { carImages: string[] }) {
           </div>
         </div>
 
-        <div className="animate-fade-in-right lg:-mr-4">
-          <HeroCarShowcase images={carImages} />
+        <div className="animate-fade-in-right flex items-center justify-center lg:justify-end">
+          <HeroCarShowcase images={heroImages} />
         </div>
       </div>
     </section>

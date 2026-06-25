@@ -109,6 +109,21 @@ body {
 .animate-heartbeat     { animation: heartbeat  0.3s ease-out; }
 .animate-page-in       { animation: fadeInUp   0.25s ease-out both; }
 
+@keyframes heroCarFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -14px, 0); }
+}
+
+.hero-car-float {
+  animation: heroCarFloat 6.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-car-float {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in-up, .animate-fade-in, .animate-fade-in-down,
   .animate-fade-in-left, .animate-fade-in-right, .animate-page-in {

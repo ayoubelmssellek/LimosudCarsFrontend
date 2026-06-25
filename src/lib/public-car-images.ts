@@ -1,4 +1,13 @@
 const IMAGE_EXT = /\.(png|jpe?g|webp|gif|avif)$/i;
+const HERO_IMAGE_DIR = "hero";
+
+/** Curated fallback when `/public/cars/hero/` has no transparent assets yet. */
+export const HERO_VEHICLE_FALLBACK = [
+  "/cars/rolls-royce.png",
+  "/cars/nissan-gtr-1.png",
+  "/cars/cr-v-1.png",
+  "/cars/moz-exclusive-white.png",
+] as const;
 
 export const PUBLIC_CAR_IMAGES = [
   "/cars/all-new-rush.png",
@@ -31,6 +40,47 @@ export function publicCarImageLabel(src: string): string {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+/** True alpha-transparent hero assets live under `/public/cars/hero/`. */
+export function isTransparentHeroAsset(src: string): boolean {
+  return src.includes(`/cars/${HERO_IMAGE_DIR}/`);
+}
+
+function readImageDir(relativeDir: string): string[] {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const fs = require("node:fs") as typeof import("node:fs");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const path = require("node:path") as typeof import("node:path");
+
+    const dir = path.join(process.cwd(), "public", "cars", relativeDir);
+    if (!fs.existsSync(dir)) {
+      return [];
+    }
+
+    return fs
+      .readdirSync(dir)
+      .filter((file) => IMAGE_EXT.test(file))
+      .sort()
+      .map((file) => `/cars/${relativeDir}/${file}`);
+  } catch {
+    return [];
+  }
+}
+
+/** Up to 4 hero vehicles — prefers transparent assets in `/cars/hero/`. */
+export function listHeroVehicleImages(): string[] {
+  if (typeof window !== "undefined") {
+    return [...HERO_VEHICLE_FALLBACK];
+  }
+
+  const heroAssets = readImageDir(HERO_IMAGE_DIR).slice(0, 4);
+  if (heroAssets.length > 0) {
+    return heroAssets;
+  }
+
+  return [...HERO_VEHICLE_FALLBACK];
 }
 
 export function listPublicCarImages(): string[] {
